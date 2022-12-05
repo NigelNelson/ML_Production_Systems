@@ -3,6 +3,7 @@ import json, random
 import psycopg2
 import os
 import sys
+from datetime import datetime 
 
 app = Flask(__name__)
 
@@ -35,90 +36,115 @@ def get_db_connection():
 
 @app.route('/email', methods=['POST'])
 def post_email():
-    int_random = random.randint(1000, 9999)
+
+    conn = psycopg2.connect(host='localhost',
+                                database='email_ingestion',
+                                user='ingestion_service',
+                                password='puppet-soil-SWEETEN')
+                                
+    print(conn)
+
+    email_id = random.randint(1000, 9999)
+    dt = datetime.now()
 
     request_data = request.get_json()
     request_data_to = request_data["to"]
     request_data_from = request_data["from"]
     request_data_subject = request_data["subject"]
     request_data_body = request_data["body"]
+    json_body = jsonify(to=request_data_to, from_=request_data_from, subject=request_data_subject, body=request_data_body)
 
-
-    return jsonify(email_id=int_random)
-
-
-@app.route('/mailbox/email/<email_id:int>', methods=['GET'])
-def get_email_by_id():
-    """
-    Returns a JSON object with the key "email" and an associated value of a String containing the entire email text
-    """
+    # Insert into psql
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO email_ingestion (email_id, received_timestamp, email_object) VALUES (%s, %s, %s)',
+                    (email_id, dt, json_body))
     
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return jsonify(email_id=email_id)
+
+
+# @app.route('/mailbox/email/<email_id:int>', methods=['GET'])
+# def get_email_by_id():
+#     """
+#     Returns a JSON object with the key "email" and an associated value of a String containing the entire email text
+#     """
+    
+#     return {
+#         "email": {
+#             "to": "",
+#             "from": "",
+#             "subject": "",
+#             "body": ""
+#         }
+#     }
 
 
 
-@app.route('/mailbox/email/<email_id:int>/folder', methods=['GET'])
-def get_email_folder():
-    """
-    Get the folder containing the given email.  Examples of folders include "Inbox", "Archive", "Trash", and "Sent".
-    """
-
-
-
-
-@app.route('/mailbox/email/<email_id:int>/labels', methods=['GET'])
-def get_email_labels():
-    """
-    Returns a JSON object with the fields "email_id" and "labels".  The value for labels is a list of strings.  Valid labels include "spam", "read", and "important".  No label may be repeated.
-    """
-
-
-
-
-@app.route('/mailbox/folder/<folder:str>', methods=['GET'])
-def get_mailbox_folder():
-    """
-    Lists the emails in a given folder.  Returns a list of email_ids.
-    """
-
-
-
-@app.route('/mailbox/labels/<label:str>', methods=['GET'])
-def get_mailbox_labels():
-    """
-    List emails with the given label.  Returns a list of email_ids.
-    """
+# @app.route('/mailbox/email/<email_id:int>/folder', methods=['GET'])
+# def get_email_folder():
+#     """
+#     Get the folder containing the given email.  Examples of folders include "Inbox", "Archive", "Trash", and "Sent".
+#     """
 
 
 
 
-@app.route('/mailbox/email/<email_id:int>/folder/<folder:str>', methods=['PUT'])
-def put_email_to_folder():
-    """
-    Moves email to the given folder.  Folders include "Inbox", "Archive", "Trash", and "Sent".
-    """
+# @app.route('/mailbox/email/<email_id:int>/labels', methods=['GET'])
+# def get_email_labels():
+#     """
+#     Returns a JSON object with the fields "email_id" and "labels".  The value for labels is a list of strings.  Valid labels include "spam", "read", and "important".  No label may be repeated.
+#     """
 
 
 
 
-@app.route('/mailbox/email/<email_id:int>/label/<label:str>', methods=['PUT'])
-def mark_email_with_label():
-    """
-    Mark the given email with the given label. Valid labels include "spam", "read", and "important".
-    """
+# @app.route('/mailbox/folder/<folder:str>', methods=['GET'])
+# def get_mailbox_folder():
+#     """
+#     Lists the emails in a given folder.  Returns a list of email_ids.
+#     """
+
+
+
+# @app.route('/mailbox/labels/<label:str>', methods=['GET'])
+# def get_mailbox_labels():
+#     """
+#     List emails with the given label.  Returns a list of email_ids.
+#     """
 
 
 
 
-@app.route('/mailbox/email/<email_id:int>/label/<label:str>', methods=['DELETE'])
-def remove_label_from_email():
-    """
-    Remove the given label from the given email. Valid labels include "spam", "read", and "important".
-    """
+# @app.route('/mailbox/email/<email_id:int>/folder/<folder:str>', methods=['PUT'])
+# def put_email_to_folder():
+#     """
+#     Moves email to the given folder.  Folders include "Inbox", "Archive", "Trash", and "Sent".
+#     """
 
 
+
+
+# @app.route('/mailbox/email/<email_id:int>/label/<label:str>', methods=['PUT'])
+# def mark_email_with_label():
+#     """
+#     Mark the given email with the given label. Valid labels include "spam", "read", and "important".
+#     """
+
+
+
+
+# @app.route('/mailbox/email/<email_id:int>/label/<label:str>', methods=['DELETE'])
+# def remove_label_from_email():
+#     """
+#     Remove the given label from the given email. Valid labels include "spam", "read", and "important".
+#     """
 
 
 app.run(port=5000)
 
+# Test connection
 # print(get_db_connection())
     
