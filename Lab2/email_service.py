@@ -3,7 +3,7 @@ import json, random
 import psycopg2
 import os
 import sys
-from datetime import datetime 
+from datetime import datetime, timezone
 
 app = Flask(__name__)
 
@@ -40,24 +40,43 @@ def post_email():
     conn = psycopg2.connect(host='localhost',
                                 database='email_ingestion',
                                 user='ingestion_service',
-                                password='puppet-soil-SWEETEN')
+                                password='puppet-soil-SWEETEN',
+                                port='5432')
                                 
     print(conn)
 
     email_id = random.randint(1000, 9999)
-    dt = datetime.now()
+    dt = datetime.now(timezone.utc)
 
     request_data = request.get_json()
     request_data_to = request_data["to"]
     request_data_from = request_data["from"]
     request_data_subject = request_data["subject"]
     request_data_body = request_data["body"]
-    json_body = jsonify(to=request_data_to, from_=request_data_from, subject=request_data_subject, body=request_data_body)
 
+    body = {
+  "to": request_data_to,
+  "from": request_data_from,
+  "subject": request_data_subject,
+  "body": request_data_body
+    }
+
+    json_body = json.dumps(body)
+   
     # Insert into psql
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO email_ingestion (email_id, received_timestamp, email_object) VALUES (%s, %s, %s)',
-                    (email_id, dt, json_body))
+    cursor.execute('INSERT INTO emails (received_timestamp, email_object) VALUES (%s, %s)',
+                    (dt, json_body))
+    
+
+    # ------------ For verification -----------
+    # postgreSQL_select_Query = "select * from emails"
+
+    # cursor.execute(postgreSQL_select_Query)
+    # records = cursor.fetchall()
+    # for row in records:
+    #     print(row)
+    # --------------------------
     
     conn.commit()
     cursor.close()
@@ -143,7 +162,7 @@ def post_email():
 #     """
 
 
-app.run(port=5000)
+app.run()
 
 # Test connection
 # print(get_db_connection())
