@@ -4,8 +4,20 @@ import psycopg2
 import os
 import sys
 from datetime import datetime, timezone
+import structlog
 
 app = Flask(__name__)
+
+
+def configure_loging():
+
+  with open("log_file.json", "wt", encoding="utf-8") as log_fl:
+    structlog.configure(
+      processors=[structlog.processors.TimeStamper(fmt="iso"),
+      structlog.processors.JSONRenderer()],
+      logger_factory=structlog.WriteLoggerFactory(file=log_fl)
+    )
+
 
 def get_db_connection():
     """
@@ -161,7 +173,7 @@ def post_email():
 #     Remove the given label from the given email. Valid labels include "spam", "read", and "important".
 #     """
 
-
+configure_loging()
 app.run()
 
 # Test connection
