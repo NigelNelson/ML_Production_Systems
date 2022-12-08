@@ -73,7 +73,6 @@ def post_email():
     
     conn.commit()
     cursor.close()
-    conn.close()
 
     return jsonify(email_id=email_id)
 
