@@ -79,7 +79,9 @@ def post_email():
 
 
 def configure(log_fl):
-  
+  """
+  Reusable code in GET, PUT, DELETE routes 
+  """
   structlog.configure(
       processors=[structlog.processors.TimeStamper(fmt="iso"),
       structlog.processors.JSONRenderer()],
@@ -118,7 +120,6 @@ def get_email_folder(email_id):
     
       configure(log_fl)
       logger = structlog.get_logger()
-
       logger.info(event="email::id::folder::get",
               email_id=email_id,
               )
@@ -137,7 +138,6 @@ def get_email_labels(email_id):
     
     configure(log_fl)
     logger = structlog.get_logger()
-
     logger.info(event="email::id::labels::get",
             email_id=email_id,
             )
@@ -157,7 +157,6 @@ def get_emails_by_folder(folder):
     
       configure(log_fl)
       logger = structlog.get_logger()
-
       logger.info(event="folder::emails::get",
                   folder=folder,
                   )
@@ -176,7 +175,6 @@ def get_emails_by_label(label):
     
       configure(log_fl)
       logger = structlog.get_logger()
-
       logger.info(event="labels::label::get",
                   label=label,
                   )
@@ -191,6 +189,14 @@ def put_email_to_folder(email_id, folder):
     """
     Moves email to the given folder.  Folders include "Inbox", "Archive", "Trash", and "Sent".
     """
+    with open("log_file.json", "wt", encoding="utf-8") as log_fl:
+    
+      configure(log_fl)
+      logger = structlog.get_logger()
+      logger.info(event="email::id::folder::folder::put",
+                  email_id=email_id,
+                  folder=folder
+                  )
 
     return {
       'folder' : 'Inbox'
@@ -202,7 +208,14 @@ def mark_email_with_label(email_id, label):
     """
     Mark the given email with the given label. Valid labels include "spam", "read", and "important".
     """
-
+    with open("log_file.json", "wt", encoding="utf-8") as log_fl:
+    
+      configure(log_fl)
+      logger = structlog.get_logger()
+      logger.info(event="email::id::label::put",
+                  email_id=email_id,
+                  label=label
+                  )
 
     return {
       'label' : 'read'
@@ -214,14 +227,19 @@ def remove_label_from_email(email_id, label):
     """
     Remove the given label from the given email. Valid labels include "spam", "read", and "important".
     """
-
-
+    with open("log_file.json", "wt", encoding="utf-8") as log_fl:
+    
+      configure(log_fl)
+      logger = structlog.get_logger()
+      logger.info(event="email::id::label::delete",
+                  email_id=email_id,
+                  label=label
+                  )
 
     return {
       'label': 'read'
     }
 
-# configure_logging()
 conn = get_db_connection()
 app.run()
 
