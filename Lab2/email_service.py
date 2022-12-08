@@ -68,7 +68,6 @@ def post_email():
 
     json_body = json.dumps(body)
    
-    # Insert into psql
     cursor = conn.cursor()
     cursor.execute('INSERT INTO emails (received_timestamp, email_object) VALUES (%s, %s)',
                     (dt, json_body))
@@ -123,13 +122,27 @@ def get_email_by_id(email_id):
   }
 
 
-# @app.route('/mailbox/email/<email_id:int>/folder', methods=['GET'])
-# def get_email_folder():
-#     """
-#     Get the folder containing the given email.  Examples of folders include "Inbox", "Archive", "Trash", and "Sent".
-#     """
+@app.route('/mailbox/email/<email_id>/folder', methods=['GET'])
+def get_email_folder(email_id):
+    """
+    Get the folder containing the given email.  Examples of folders include "Inbox", "Archive", "Trash", and "Sent".
+    """
 
+    cursor = conn.cursor()
+    cursor.execute("""
+                  SELECT * from emails where emails.email_id = %s;
+                  """,
+                  [email_id])
 
+    result = cursor.fetchone()
+    email_details = result[2]
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return {
+      "folder": email_details['folder']
+    }
 
 
 # @app.route('/mailbox/email/<email_id:int>/labels', methods=['GET'])
