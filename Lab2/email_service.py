@@ -94,7 +94,7 @@ def get_email_by_id(email_id):
   """
   Returns a JSON object with the key "email" and an associated value of a String containing the entire email text
   """
-  with open("log_file.json", "a+", encoding="utf-8") as log_fl:
+  with open("log_file.json", "a", encoding="utf-8") as log_fl:
     
     configure(log_fl)
     logger = structlog.get_logger()
@@ -116,7 +116,7 @@ def get_email_folder(email_id):
     """
     Get the folder containing the given email.  Examples of folders include "Inbox", "Archive", "Trash", and "Sent".
     """
-    with open("log_file.json", "a+", encoding="utf-8") as log_fl:
+    with open("log_file.json", "a", encoding="utf-8") as log_fl:
     
       configure(log_fl)
       logger = structlog.get_logger()
@@ -134,7 +134,7 @@ def get_email_labels(email_id):
   """
   Returns a JSON object with the fields "email_id" and "labels".  The value for labels is a list of strings.  Valid labels include "spam", "read", and "important".  No label may be repeated.
   """
-  with open("log_file.json", "a+", encoding="utf-8") as log_fl:
+  with open("log_file.json", "a", encoding="utf-8") as log_fl:
     
     configure(log_fl)
     logger = structlog.get_logger()
@@ -153,7 +153,7 @@ def get_emails_by_folder(folder):
     """
     Lists the emails in a given folder.  Returns a list of email_ids.
     """
-    with open("log_file.json", "a+", encoding="utf-8") as log_fl:
+    with open("log_file.json", "a", encoding="utf-8") as log_fl:
     
       configure(log_fl)
       logger = structlog.get_logger()
@@ -171,7 +171,7 @@ def get_emails_by_label(label):
     """
     List emails with the given label.  Returns a list of email_ids.
     """
-    with open("log_file.json", "a+", encoding="utf-8") as log_fl:
+    with open("log_file.json", "a", encoding="utf-8") as log_fl:
     
       configure(log_fl)
       logger = structlog.get_logger()
@@ -189,7 +189,7 @@ def put_email_to_folder(email_id, folder):
     """
     Moves email to the given folder.  Folders include "Inbox", "Archive", "Trash", and "Sent".
     """
-    with open("log_file.json", "a+", encoding="utf-8") as log_fl:
+    with open("log_file.json", "a", encoding="utf-8") as log_fl:
     
       configure(log_fl)
       logger = structlog.get_logger()
@@ -208,7 +208,7 @@ def mark_email_with_label(email_id, label):
     """
     Mark the given email with the given label. Valid labels include "spam", "read", and "important".
     """
-    with open("log_file.json", "a+", encoding="utf-8") as log_fl:
+    with open("log_file.json", "a", encoding="utf-8") as log_fl:
     
       configure(log_fl)
       logger = structlog.get_logger()
@@ -227,7 +227,7 @@ def remove_label_from_email(email_id, label):
     """
     Remove the given label from the given email. Valid labels include "spam", "read", and "important".
     """
-    with open("log_file.json", "a+", encoding="utf-8") as log_fl:
+    with open("log_file.json", "a", encoding="utf-8") as log_fl:
     
       configure(log_fl)
       logger = structlog.get_logger()
