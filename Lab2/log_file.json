@@ -2,3 +2,5 @@
 {"email_id": "1", "label": "read", "event": "email::id::label::put", "timestamp": "2022-12-08T20:43:28.596734Z"}
 {"email_id": "1", "label": "read", "event": "email::id::label::delete", "timestamp": "2022-12-08T20:43:31.617718Z"}
 {"email_id": "1", "label": "read", "event": "email::id::label::delete", "timestamp": "2022-12-08T20:43:33.435045Z"}
+{"email_id": "1", "event": "email::id::get", "timestamp": "2022-12-08T21:41:01.334844Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-08T21:41:18.319289Z"}
