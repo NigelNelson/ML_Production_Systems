@@ -78,6 +78,15 @@ def post_email():
     return jsonify(email_id=email_id)
 
 
+def configure(log_fl):
+  
+  structlog.configure(
+      processors=[structlog.processors.TimeStamper(fmt="iso"),
+      structlog.processors.JSONRenderer()],
+      logger_factory=structlog.WriteLoggerFactory(file=log_fl)
+    )
+
+
 @app.route('/mailbox/email/<email_id>', methods=['GET'])
 def get_email_by_id(email_id):
   """
@@ -85,18 +94,10 @@ def get_email_by_id(email_id):
   """
   with open("log_file.json", "wt", encoding="utf-8") as log_fl:
     
-    structlog.configure(
-      processors=[structlog.processors.TimeStamper(fmt="iso"),
-      structlog.processors.JSONRenderer()],
-      logger_factory=structlog.WriteLoggerFactory(file=log_fl)
-    )
-
+    configure(log_fl)
     logger = structlog.get_logger()
-
     logger.info(event="email::id::get",
               email_id=email_id)
-
-
 
   return {
       "email": {
@@ -113,7 +114,15 @@ def get_email_folder(email_id):
     """
     Get the folder containing the given email.  Examples of folders include "Inbox", "Archive", "Trash", and "Sent".
     """
+    with open("log_file.json", "wt", encoding="utf-8") as log_fl:
+    
+      configure(log_fl)
+      logger = structlog.get_logger()
 
+      folder = "Inbox" ## hardcode in folder
+      logger.info(event="email::id::folder::get",
+              email_id=email_id,
+              folder=folder)
     
     return {
       "folder": "Inbox"
@@ -125,6 +134,14 @@ def get_email_labels(email_id):
   """
   Returns a JSON object with the fields "email_id" and "labels".  The value for labels is a list of strings.  Valid labels include "spam", "read", and "important".  No label may be repeated.
   """
+  with open("log_file.json", "wt", encoding="utf-8") as log_fl:
+    
+    configure(log_fl)
+    logger = structlog.get_logger()
+
+    logger.info(event="email::id::labels::get",
+            email_id=email_id,
+            labels=["read", "important"])
 
 
   return {
