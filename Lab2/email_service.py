@@ -96,9 +96,9 @@ def get_email_by_id(email_id):
   Returns a JSON object with the key "email" and an associated value of a String containing the entire email text
   """
   
-  logger = structlog.get_logger()
-  logger.info(event="email::id::get",
-              email_id=email_id)
+  # logger = structlog.get_logger()
+  # logger.info(event="email::id::get",
+  #             email_id=email_id)
 
   cursor = conn.cursor()
 
@@ -107,7 +107,7 @@ def get_email_by_id(email_id):
                 """,
                 [email_id])
   result = cursor.fetchone()
-  print(result)
+  email_details = result[2]
   conn.commit()
   cursor.close()
   conn.close()
@@ -115,10 +115,10 @@ def get_email_by_id(email_id):
 
   return {
       "email": {
-          "to": "",
-          "from": "",
-          "subject": "",
-          "body": ""
+          "to": email_details['to'],
+          "from": email_details['from'],
+          "subject": email_details['subject'],
+          "body": email_details['body']
       }
   }
 
