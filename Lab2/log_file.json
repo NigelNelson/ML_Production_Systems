@@ -1,1 +1,3 @@
-{"email_id": "1", "event": "email::id::get", "timestamp": "2022-12-08T19:59:15.094806Z"}
+{"email_id": "1", "label": "read", "event": "email::id::label::put", "timestamp": "2022-12-08T20:39:32.032177Z"}
+{"email_id": "1", "label": "read", "event": "email::id::label::put", "timestamp": "2022-12-08T20:39:36.997898Z"}
+{"email_id": "1", "label": "read", "event": "email::id::label::put", "timestamp": "2022-12-08T20:39:39.162430Z"}
