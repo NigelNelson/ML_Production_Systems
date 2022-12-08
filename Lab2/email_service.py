@@ -9,6 +9,12 @@ import structlog
 app = Flask(__name__)
 
 
+
+
+
+
+
+
 def configure_loging():
 
   with open("log_file.json", "wt", encoding="utf-8") as log_fl:
@@ -49,14 +55,6 @@ def get_db_connection():
 @app.route('/email', methods=['POST'])
 def post_email():
 
-    conn = psycopg2.connect(host='localhost',
-                                database='email_ingestion',
-                                user='ingestion_service',
-                                password='puppet-soil-SWEETEN',
-                                port='5432')
-                                
-    print(conn)
-
     email_id = random.randint(1000, 9999)
     dt = datetime.now(timezone.utc)
 
@@ -67,10 +65,10 @@ def post_email():
     request_data_body = request_data["body"]
 
     body = {
-  "to": request_data_to,
-  "from": request_data_from,
-  "subject": request_data_subject,
-  "body": request_data_body
+            "to": request_data_to,
+            "from": request_data_from,
+            "subject": request_data_subject,
+            "body": request_data_body
     }
 
     json_body = json.dumps(body)
@@ -97,24 +95,37 @@ def post_email():
     return jsonify(email_id=email_id)
 
 
-@app.route('/mailbox/email/<email_id:int>', methods=['GET'])
-def get_email_by_id():
-    """
-    Returns a JSON object with the key "email" and an associated value of a String containing the entire email text
-    """
-    
-    logger = structlog.get_logger()
-    logger.info(event="email::id::get",
-                email_id="todo")
+@app.route('/mailbox/email/<email_id>', methods=['GET'])
+def get_email_by_id(email_id):
+  """
+  Returns a JSON object with the key "email" and an associated value of a String containing the entire email text
+  """
+  
+  logger = structlog.get_logger()
+  logger.info(event="email::id::get",
+              email_id=email_id)
 
-    return {
-        "email": {
-            "to": "",
-            "from": "",
-            "subject": "",
-            "body": ""
-        }
-    }
+  cursor = conn.cursor()
+
+  cursor.execute("""
+                SELECT * from emails where emails.email_id = %s;
+                """,
+                [email_id])
+  result = cursor.fetchone()
+  print(result)
+  conn.commit()
+  cursor.close()
+  conn.close()
+
+
+  return {
+      "email": {
+          "to": "",
+          "from": "",
+          "subject": "",
+          "body": ""
+      }
+  }
 
 
 
@@ -177,6 +188,7 @@ def get_email_by_id():
 #     Remove the given label from the given email. Valid labels include "spam", "read", and "important".
 #     """
 
+conn = get_db_connection()
 configure_loging()
 app.run()
 
