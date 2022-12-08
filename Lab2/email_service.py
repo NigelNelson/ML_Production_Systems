@@ -121,8 +121,8 @@ def get_email_folder(email_id):
     }
 
 
-@app.route('/mailbox/email/<email_id:int>/labels', methods=['GET'])
-def get_email_labels():
+@app.route('/mailbox/email/<email_id>/labels', methods=['GET'])
+def get_email_labels(email_id):
   """
   Returns a JSON object with the fields "email_id" and "labels".  The value for labels is a list of strings.  Valid labels include "spam", "read", and "important".  No label may be repeated.
   """
@@ -134,8 +134,8 @@ def get_email_labels():
   }
 
 
-@app.route('/mailbox/folder/<folder:str>', methods=['GET'])
-def get_mailbox_folder():
+@app.route('/mailbox/folder/<folder>', methods=['GET'])
+def get_mailbox_folder(folder):
     """
     Lists the emails in a given folder.  Returns a list of email_ids.
     """
@@ -146,8 +146,8 @@ def get_mailbox_folder():
 
 
 
-@app.route('/mailbox/labels/<label:str>', methods=['GET'])
-def get_mailbox_labels():
+@app.route('/mailbox/labels/<label>', methods=['GET'])
+def get_mailbox_labels(label):
     """
     List emails with the given label.  Returns a list of email_ids.
     """
@@ -158,8 +158,8 @@ def get_mailbox_labels():
     }
 
 
-@app.route('/mailbox/email/<email_id:int>/folder/<folder:str>', methods=['PUT'])
-def put_email_to_folder():
+@app.route('/mailbox/email/<email_id>/folder/<folder>', methods=['PUT'])
+def put_email_to_folder(email_id, folder):
     """
     Moves email to the given folder.  Folders include "Inbox", "Archive", "Trash", and "Sent".
     """
@@ -169,8 +169,8 @@ def put_email_to_folder():
     }
 
 
-@app.route('/mailbox/email/<email_id:int>/label/<label:str>', methods=['PUT'])
-def mark_email_with_label():
+@app.route('/mailbox/email/<email_id>/label/<label>', methods=['PUT'])
+def mark_email_with_label(email_id, label):
     """
     Mark the given email with the given label. Valid labels include "spam", "read", and "important".
     """
@@ -181,8 +181,8 @@ def mark_email_with_label():
     }
 
 
-@app.route('/mailbox/email/<email_id:int>/label/<label:str>', methods=['DELETE'])
-def remove_label_from_email():
+@app.route('/mailbox/email/<email_id>/label/<label>', methods=['DELETE'])
+def remove_label_from_email(email_id, label):
     """
     Remove the given label from the given email. Valid labels include "spam", "read", and "important".
     """
@@ -197,6 +197,4 @@ configure_logging()
 conn = get_db_connection()
 app.run()
 
-# Test connection
-# print(get_db_connection())
     
