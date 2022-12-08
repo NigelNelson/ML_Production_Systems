@@ -97,20 +97,24 @@ def post_email():
     return jsonify(email_id=email_id)
 
 
-# @app.route('/mailbox/email/<email_id:int>', methods=['GET'])
-# def get_email_by_id():
-#     """
-#     Returns a JSON object with the key "email" and an associated value of a String containing the entire email text
-#     """
+@app.route('/mailbox/email/<email_id:int>', methods=['GET'])
+def get_email_by_id():
+    """
+    Returns a JSON object with the key "email" and an associated value of a String containing the entire email text
+    """
     
-#     return {
-#         "email": {
-#             "to": "",
-#             "from": "",
-#             "subject": "",
-#             "body": ""
-#         }
-#     }
+    logger = structlog.get_logger()
+    logger.info(event="email::id::get",
+                email_id="todo")
+
+    return {
+        "email": {
+            "to": "",
+            "from": "",
+            "subject": "",
+            "body": ""
+        }
+    }
 
 
 
