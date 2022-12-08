@@ -9,17 +9,6 @@ import structlog
 app = Flask(__name__)
 
 
-def configure_logging():
-
-  with open("log_file.json", "wt", encoding="utf-8") as log_fl:
-    
-    structlog.configure(
-      processors=[structlog.processors.TimeStamper(fmt="iso"),
-      structlog.processors.JSONRenderer()],
-      logger_factory=structlog.WriteLoggerFactory(file=log_fl)
-    )
-    
-
 def get_db_connection():
     """
     TODO - read in using environment variables
@@ -94,10 +83,20 @@ def get_email_by_id(email_id):
   """
   Returns a JSON object with the key "email" and an associated value of a String containing the entire email text
   """
-  
-  logger = structlog.get_logger()
-  logger.info(event="email::id::get",
+  with open("log_file.json", "wt", encoding="utf-8") as log_fl:
+    
+    structlog.configure(
+      processors=[structlog.processors.TimeStamper(fmt="iso"),
+      structlog.processors.JSONRenderer()],
+      logger_factory=structlog.WriteLoggerFactory(file=log_fl)
+    )
+
+    logger = structlog.get_logger()
+
+    logger.info(event="email::id::get",
               email_id=email_id)
+
+
 
   return {
       "email": {
@@ -193,7 +192,7 @@ def remove_label_from_email(email_id, label):
       'label': 'read'
     }
 
-configure_logging()
+# configure_logging()
 conn = get_db_connection()
 app.run()
 
