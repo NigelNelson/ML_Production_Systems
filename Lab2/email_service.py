@@ -119,10 +119,9 @@ def get_email_folder(email_id):
       configure(log_fl)
       logger = structlog.get_logger()
 
-      folder = "Inbox" ## hardcode in folder
       logger.info(event="email::id::folder::get",
               email_id=email_id,
-              folder=folder)
+              )
     
     return {
       "folder": "Inbox"
@@ -141,33 +140,46 @@ def get_email_labels(email_id):
 
     logger.info(event="email::id::labels::get",
             email_id=email_id,
-            labels=["read", "important"])
-
+            )
 
   return {
-    "email_id": 1,
+    "email_id": email_id,
     "labels": ["read", "important"]
   }
 
 
 @app.route('/mailbox/folder/<folder>', methods=['GET'])
-def get_mailbox_folder(folder):
+def get_emails_by_folder(folder):
     """
     Lists the emails in a given folder.  Returns a list of email_ids.
     """
+    with open("log_file.json", "wt", encoding="utf-8") as log_fl:
+    
+      configure(log_fl)
+      logger = structlog.get_logger()
+
+      logger.info(event="folder::emails::get",
+                  folder=folder,
+                  )
 
     return {
       "email_ids": [1,2,3,4]
     }
 
 
-
 @app.route('/mailbox/labels/<label>', methods=['GET'])
-def get_mailbox_labels(label):
+def get_emails_by_label(label):
     """
     List emails with the given label.  Returns a list of email_ids.
     """
+    with open("log_file.json", "wt", encoding="utf-8") as log_fl:
+    
+      configure(log_fl)
+      logger = structlog.get_logger()
 
+      logger.info(event="labels::label::get",
+                  label=label,
+                  )
 
     return {
       'email_ids' : [1,2,3]
