@@ -4,3 +4,26 @@
 {"email_id": "1", "label": "read", "event": "email::id::label::delete", "timestamp": "2022-12-08T20:43:33.435045Z"}
 {"email_id": "1", "event": "email::id::get", "timestamp": "2022-12-08T21:41:01.334844Z"}
 {"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-08T21:41:18.319289Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T19:13:53.628908Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T20:01:46.819662Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T20:01:52.303939Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T20:01:56.442204Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T20:04:07.530187Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T20:04:47.559752Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T20:04:51.567873Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T20:31:27.356555Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T20:31:33.404781Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T20:33:30.108848Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T20:33:31.577450Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T21:24:45.526965Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T21:27:49.065600Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T21:27:50.103234Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T21:27:59.600571Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T21:32:00.910923Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T21:32:01.919350Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T21:32:03.496297Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T21:32:04.595289Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T21:48:08.049439Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T21:56:19.776086Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T21:56:21.455325Z"}
+{"email_id": "1", "event": "email::id::folder::get", "timestamp": "2022-12-15T21:56:22.973791Z"}
