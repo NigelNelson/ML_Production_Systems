@@ -1,5 +1,7 @@
 # ML_Production_Systems
 
+## Nigel Nelson, Collin Quinn
+
 ## How to run:
 - Start Postgres if not already running:
   - pg_ctl start -D "C:\Program Files\PostgreSQL\15\data"
