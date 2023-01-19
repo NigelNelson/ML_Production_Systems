@@ -8,7 +8,18 @@ object Lab3 extends  App {
 
   val spark: SparkSession = SparkSession.builder()
     .master("local[1]")
-    .getOrCreate();
+    .getOrCreate()
+
+  spark.sparkContext
+    .hadoopConfiguration.set("fs.s3a.access.key", "training_service")
+  spark.sparkContext
+    .hadoopConfiguration.set("fs.s3a.secret.key", "minioadmin")
+  spark.sparkContext
+    .hadoopConfiguration.set("fs.s3a.endpoint", "http://127.0.0.1:9000")
+  spark.sparkContext
+    .hadoopConfiguration.set("fs.s3a.connection.ssl.enabled", "false")
+
+
 
   spark.sparkContext.setLogLevel("ERROR")
 
@@ -17,7 +28,7 @@ object Lab3 extends  App {
     */
   val df_original: DataFrame = spark
     .read
-    .json("./2023-01-10_10-30.json")
+    .json("s3a://log-files/*.json")
   println("Original df length")
   println(df_original.count())
 
@@ -46,12 +57,14 @@ object Lab3 extends  App {
     .jdbc(url, tableName, props)
   println(tableDf.count())
 
-  val joinedDf = tableDf.join(df_spam, tableDf("email_id") === df_spam("email_id"), "left_outer")
+  val joinedDf = tableDf.join(df_spam, tableDf("email_id") === df_spam("email_id"), "left_outer").drop(df_spam.id)
   println("Joined table count:")
   println(joinedDf.count())
 
   val allColumnNames=joinedDf.columns
   println(allColumnNames.mkString(","))
+
+  joinedDf.write.json("s3a://emails/test")
 
 
 

@@ -15,7 +15,6 @@ import json
 import os
 import sys
 
-
 def read_log(tail):
     """
     Reads in each new line in the file being tailed, and

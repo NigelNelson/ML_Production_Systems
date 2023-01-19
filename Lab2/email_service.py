@@ -62,7 +62,7 @@ def post_email():
             "body": request_data_body
     }
 
-    json_body = json.dumps(body)
+    json_body = json.dumps(body).replace(r'\u0000', '')
    
     cursor = conn.cursor()
     cursor.execute('INSERT INTO emails (received_timestamp, email_object) VALUES (%s, %s)',
