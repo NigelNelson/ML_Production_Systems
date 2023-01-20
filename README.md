@@ -2,7 +2,7 @@
 
 ## Nigel Nelson, Collin Quinn
 
-## How to run:
+## How to run Project 2:
 - Start Postgres if not already running:
   - pg_ctl start -D "C:\Program Files\PostgreSQL\15\data"
 - (IF NEEDED) stop postgres:
@@ -15,3 +15,13 @@
   - python mailbox_service.py
 - Start log collection:
   - MINIO_ACESS_KEY=log-depositor MINIO_SECRET_KEY=minioadmin MINIO_ENDPOINT=localhost:9000 MINIO_BUCKET=log-files LOG_FILE_PATH=./log_file.json python log_collection.py
+
+## How to run Project 3:
+- Ensure Minio and PostGres Database are running
+- Set the following Environment Variables:
+  - TS_ACCESS_KEY=training_service
+  - TS_SECRET_KEY=minioadmin
+  - TS_ENDPOINT=http://127.0.0.1:9000
+  - POSTGRES_USERNAME=ingestion_service
+  - POSTGRES_PASSWORD=puppet-soil-SWEETEN
+- Run the Lab3.scala script

@@ -15,11 +15,11 @@ object Lab3 extends  App {
 
   // Set S3 access properties
   spark.sparkContext
-    .hadoopConfiguration.set("fs.s3a.access.key", "training_service")
+    .hadoopConfiguration.set("fs.s3a.access.key", sys.env("TS_ACCESS_KEY"))
   spark.sparkContext
-    .hadoopConfiguration.set("fs.s3a.secret.key", "minioadmin")
+    .hadoopConfiguration.set("fs.s3a.secret.key", sys.env("TS_SECRET_KEY"))
   spark.sparkContext
-    .hadoopConfiguration.set("fs.s3a.endpoint", "http://127.0.0.1:9000")
+    .hadoopConfiguration.set("fs.s3a.endpoint", sys.env("TS_ENDPOINT"))
   spark.sparkContext
     .hadoopConfiguration.set("fs.s3a.connection.ssl.enabled", "false")
 
@@ -40,8 +40,8 @@ object Lab3 extends  App {
   val url = "jdbc:postgresql://127.0.0.1:5432/email_ingestion"
   val tableName = "emails"
   val props = new Properties()
-  props.setProperty("user", "ingestion_service")
-  props.setProperty("password", "puppet-soil-SWEETEN")
+  props.setProperty("user", sys.env("POSTGRES_USERNAME"))
+  props.setProperty("password", sys.env("POSTGRES_PASSWORD"))
 
   // Read Postgres table into DataFrame
   val tableDf: DataFrame = spark.read
