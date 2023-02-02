@@ -83,7 +83,7 @@ def main():
         # Write new lines to a byte array and every 15 minutes if
         # the byte array is not empty, write the data to Minio
         data = bytearray(b'')
-        while datetime.now().minute not in list(range(0,60,15)):
+        while datetime.now().minute not in list(range(0,60,2)):
             data += read_log(tail)
             sleep(15)
         if data:

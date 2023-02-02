@@ -45,8 +45,11 @@ def post_email():
     Email endpoint that converts the email to a json object and stores
     it in the specified database
     """
+    global EMAIL_ID_COUNT
 
-    email_id = random.randint(1000, 9999)
+    #email_id = random.randint(1000, 9999)
+    email_id = EMAIL_ID_COUNT
+    EMAIL_ID_COUNT += 1
     dt = datetime.now(timezone.utc)
 
     request_data = request.get_json()
@@ -65,8 +68,8 @@ def post_email():
     json_body = json.dumps(body).replace(r'\u0000', '')
    
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO emails (received_timestamp, email_object) VALUES (%s, %s)',
-                    (dt, json_body))
+    cursor.execute('INSERT INTO emails (email_id, received_timestamp, email_object) VALUES (%s, %s, %s)',
+                    (email_id, dt, json_body))
     
 
     # ------------ For verification -----------
@@ -83,7 +86,7 @@ def post_email():
 
     return jsonify(email_id=email_id)
 
-
+EMAIL_ID_COUNT = 0
 conn = get_db_connection()
 app.run(port=8888)
 

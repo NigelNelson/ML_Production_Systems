@@ -50,10 +50,11 @@ object Lab3 extends  App {
   println(tableDf.count())
 
   // Join the Postgres dataframe table and the spam table
-  val joinedDf = tableDf.join(df_spam, Seq("email_id"), "left_outer").dropDuplicates(Seq("email_id"))
+  var joinedDf = tableDf.join(df_spam, Seq("email_id"), "left_outer")
+  joinedDf = joinedDf.na.fill("ham", Array("label"))
   println("Joined table count:")
   println(joinedDf.count())
 
   // Write joined df to Minio
-  joinedDf.coalesce(1).write.mode("overwrite").json("s3a://emails/ingestion_service")
+  joinedDf.write.mode("overwrite").json("s3a://emails/ingestion_service")
 }
