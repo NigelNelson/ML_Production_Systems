@@ -55,6 +55,9 @@ object Lab3 extends  App {
   println("Joined table count:")
   println(joinedDf.count())
 
+  print(joinedDf.sort("email_object").show(5))
+  print(joinedDf.dtypes)
+
   // Write joined df to Minio
   joinedDf.write.mode("overwrite").json("s3a://emails/ingestion_service")
 }
